@@ -27,8 +27,9 @@ public class Laboratorio6 {
             if(inputUser.equals("alta usuario")) {
                 Controlador c = new Controlador();
                 DataFecha juan = new DataFecha(1992,8,26);
+                DataFecha martin = new DataFecha(1993,9,17);
                 c.altaUsuario("juan", true, juan);
-                c.altaUsuario("martin", true, juan);
+                c.altaUsuario("martin", true, martin);
                 /*DataUsuario juans = c.verInfoUsuario("juan");
                 DataUsuario martins = c.verInfoUsuario("martin");
                 System.out.println(juans.getnick());
