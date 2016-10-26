@@ -106,10 +106,14 @@ public class Controlador {
         mr.agregarRecurso(rec);
     }
     
-    public void altaUsuario(String nick, boolean sex, DataFecha nac) {
-        this.newUserNick(nick);
+    public boolean altaUsuario(String nick, boolean sex, DataFecha nac) {
+        boolean isValidName = this.newUserNick(nick);
+        if(!isValidName){
+            return isValidName;
+        }
         this.newUserData(sex, nac);
         this.confirmUser();
+        return isValidName;
     }
     
     public DataUsuario verInfoUsuario(String nick) {
