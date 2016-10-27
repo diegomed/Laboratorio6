@@ -17,10 +17,10 @@ public class DataUsuario {
     
     public DataUsuario(String nick, boolean sex, DataFecha nac) {
         int year, month, days;
-        /*DataFecha ahora = new DataFecha();
-        year = ahora.getA() - nacimiento.getA();
-        month = ahora.getMes() - nacimiento.getMes();
-        days = ahora.getD() - nacimiento.getD();
+        DataFecha ahora = new DataFecha();
+        year = ahora.getA() - nac.getA();
+        month = ahora.getMes() - nac.getMes();
+        days = ahora.getD() - nac.getD();
         
         if (month > 0) {
             edad = year;
@@ -37,7 +37,7 @@ public class DataUsuario {
                     edad = year;
                 }
             }
-        }*/
+        }
         nickname = nick;
         sexo = sex;
         nacimiento = nac;
