@@ -26,7 +26,7 @@ public class MgrRecursos {
     }
     
     public void agregarRecurso(Recursos r) {
-        if(r.getTipo() == true) {
+        if(r.getTipo()) {
             ListaArchivos.put(r.getNombre(), r);
         }
         else {

@@ -18,7 +18,6 @@ public class Carpetas extends Recursos {
         super(name, creator, description, ubication, type);
     }
     
-    
     public HashMap<String,Recursos> getListaRecursos() {
         return recursosIn;
     }

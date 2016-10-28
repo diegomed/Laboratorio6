@@ -17,10 +17,35 @@ public class Controlador {
     private boolean sexo, tipo;
     
     
-    public Controlador() {
-        
+    public Controlador() {}
+    
+    //Getters
+    public String getnick(){
+        return nickname;
+    }
+    public boolean getsexo(){
+        return sexo;
+    }
+    public DataFecha getnac(){
+        return nacimiento;
+    }
+    public String getNombre() {
+        return nombre;
+    }
+    public String getCreador() {
+        return creador;
+    }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public String getUbicacion() {
+        return ubicacion;
+    }
+    public boolean getTipo() {
+        return tipo;
     }
     
+    //alta usuario
     public boolean newUserNick(String nick) {
         boolean resultado = true;
         MgrUsuario manager = MgrUsuario.getInstance();
@@ -51,31 +76,7 @@ public class Controlador {
         mu.agregarUsuario(u);
     }
     
-    public String getnick(){
-        return nickname;
-    }
-    public boolean getsexo(){
-        return sexo;
-    }
-    public DataFecha getnac(){
-        return nacimiento;
-    }
-    public String getNombre() {
-        return nombre;
-    }
-    public String getCreador() {
-        return creador;
-    }
-    public String getDescripcion() {
-        return descripcion;
-    }
-    public String getUbicacion() {
-        return ubicacion;
-    }
-    public boolean getTipo() {
-        return tipo;
-    }
-    
+    //ver info usuario
     public DataUsuario infoUser(String nick) {
         MgrUsuario mu = MgrUsuario.getInstance();
         Usuario u = mu.getUsuario(nick);
@@ -83,6 +84,7 @@ public class Controlador {
         return du;
     }
     
+    //Crear recurso
     public void newRec(String name, String description, boolean type) {
         nombre = name;
         descripcion = description;
@@ -96,16 +98,17 @@ public class Controlador {
     
     public void confirmRec() {
         MgrRecursos mr = MgrRecursos.getInstance();
-        if(tipo == true) {
-            Archivos rec = new Archivos(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+        if(this.getTipo()) {
+            Recursos rec = new Archivos(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+            mr.agregarRecurso(rec);
         }
         else{
-            Carpetas rec = new Carpetas(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+            Recursos rec = new Carpetas(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+            mr.agregarRecurso(rec);
         }
-        Archivos rec = new Archivos(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
-        mr.agregarRecurso(rec);
     }
     
+    //Comandos
     public boolean altaUsuario(String nick, boolean sex, DataFecha nac) {
         boolean isValidName = this.newUserNick(nick);
         if(!isValidName){
@@ -119,5 +122,11 @@ public class Controlador {
     public DataUsuario verInfoUsuario(String nick) {
         DataUsuario du = this.infoUser(nick);
         return du;
+    }
+    
+    public void crearRecurso(String name, String creator, String description, String ubication, boolean type){
+        this.newRec(name, description, type);
+        this.recData(creator, ubication);
+        this.confirmRec();
     }
 }

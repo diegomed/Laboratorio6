@@ -43,7 +43,7 @@ public class Laboratorio6 {
                     }
                 }
                 catch(Exception e){
-                    System.out.println("Input de usuario invalido ");
+                    System.out.println("Input de usuario invalido");
                 }
                 //c.altaUsuario("martin", true, martin);
                 /*DataUsuario juans = c.verInfoUsuario("juan");
@@ -75,6 +75,13 @@ public class Laboratorio6 {
                 catch(Exception e){
                     System.out.println("Usuario no existente");
                 }
+            }
+            else if(inputUser.equals("crear recurso")){
+                System.out.println("Ingrese datos del recurso:");
+                System.out.println("Formato: nombre-creador-descripcion-ubicacion-tipo(archivo/carpeta)");
+                inputUser = sc.nextLine();
+                String list[] = inputUser.split("-");
+                c.crearRecurso(list[0], list[1], list[2], list[3], list[4].equals("archivo"));
             }
             else if(inputUser.equals("cmd")){
                 System.out.println("alta usuario");
