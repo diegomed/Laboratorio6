@@ -23,7 +23,7 @@ public class Laboratorio6 {
         Controlador c = new Controlador();
         Scanner sc = new Scanner(System.in);
         while(true) {
-        
+            
             String inputUser = sc.nextLine();
             
             if(inputUser.equals("alta usuario")) {
@@ -79,13 +79,25 @@ public class Laboratorio6 {
             else if(inputUser.equals("crear recurso")){
                 System.out.println("Ingrese datos del recurso:");
                 System.out.println("Formato: nombre-creador-descripcion-ubicacion-tipo(archivo/carpeta)");
-                inputUser = sc.nextLine();
-                String list[] = inputUser.split("-");
-                c.crearRecurso(list[0], list[1], list[2], list[3], list[4].equals("archivo"));
+                try{
+                    inputUser = sc.nextLine();
+                    String list[] = inputUser.split("-");
+                    boolean isValidPath = c.crearRecurso(list[0], list[1], list[2], list[3], list[4].equals("archivo"));
+                    if(isValidPath){
+                        System.out.println("Creación de recurso exitosa");
+                    }
+                    else{
+                        System.out.println("El recurso ya existe en ese directorio");
+                    }
+                }
+                catch(Exception e){
+                    System.out.println("Input de recurso invalido");
+                }
             }
             else if(inputUser.equals("cmd")){
                 System.out.println("alta usuario");
                 System.out.println("ver info usuario");
+                System.out.println("crear recurso");
             }
             else{
                 System.out.println("comando invalido");

@@ -27,10 +27,10 @@ public class MgrRecursos {
     
     public void agregarRecurso(Recursos r) {
         if(r.getTipo()) {
-            ListaArchivos.put(r.getNombre(), r);
+            ListaArchivos.put(r.getUbicacion(), r);
         }
         else {
-            ListaCarpetas.put(r.getNombre(), r);
+            ListaCarpetas.put(r.getUbicacion(), r);
         }
     }
     

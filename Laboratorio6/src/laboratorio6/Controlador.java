@@ -57,7 +57,7 @@ public class Controlador {
             }
         }
         
-        if (resultado == true) {
+        if (resultado) {
             nickname = nick;
             return true;
         }
@@ -85,15 +85,26 @@ public class Controlador {
     }
     
     //Crear recurso
-    public void newRec(String name, String description, boolean type) {
-        nombre = name;
-        descripcion = description;
-        tipo = type;
-    }
-    
-    public void recData(String creator, String ubication) {
-        creador = creator;
-        ubicacion = ubication;
+    public boolean newRec(String name, String description,String creator, String ubication, boolean type) {
+        boolean resultado = true;
+        MgrRecursos manager = MgrRecursos.getInstance();
+        HashMap<String,Recursos> List = (type) ? manager.getListaArchivos() : manager.getListaCarpetas();
+        
+        for (String resourcePath : List.keySet()) {
+            if ((List.get(resourcePath)).getUbicacion().equals(ubication)) {
+                resultado = false;
+            }
+        }
+        
+        if (resultado) {
+            nombre = name;
+            descripcion = description;
+            tipo = type;
+            creador = creator;
+            ubicacion = ubication;
+            return true;
+        }
+        return false;
     }
     
     public void confirmRec() {
@@ -124,9 +135,12 @@ public class Controlador {
         return du;
     }
     
-    public void crearRecurso(String name, String creator, String description, String ubication, boolean type){
-        this.newRec(name, description, type);
-        this.recData(creator, ubication);
+    public boolean crearRecurso(String name, String creator, String description, String ubication, boolean type){
+        boolean isValidResource = this.newRec(name, description,creator,ubication, type);
+        if(!isValidResource){
+            return isValidResource;
+        }
         this.confirmRec();
+        return isValidResource;
     }
 }
