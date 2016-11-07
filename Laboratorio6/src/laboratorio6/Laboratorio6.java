@@ -20,10 +20,14 @@ public class Laboratorio6 {
     public static void main(String[] args) {
         
         System.out.println("cmd: para ver la lista de comandos");
+        //System.out.println((char)27 + "[35mThis text would show up red" + (char)27 + "[0m");
+        String path = ".";
         Controlador c = new Controlador();
+        c.crearRecurso("root", "system", "Esta es la carpeta raiz", path, false);
         Scanner sc = new Scanner(System.in);
         while(true) {
             
+            System.out.print(path + ">");
             String inputUser = sc.nextLine();
             
             if(inputUser.equals("alta usuario")) {
@@ -33,7 +37,6 @@ public class Laboratorio6 {
                     inputUser = sc.nextLine(); //investigar try catch
                     String list[] = inputUser.split("-");
                     DataFecha nacimientoUsuario = new DataFecha(Integer.parseInt(list[4]),Integer.parseInt(list[3]),Integer.parseInt(list[2]));
-                    //DataFecha martin = new DataFecha(1993,9,17);
                     boolean isValidName = c.altaUsuario(list[0], list[1].equals("m"), nacimientoUsuario);
                     if(isValidName){
                         System.out.println("alta usuario exitosa");
@@ -45,22 +48,6 @@ public class Laboratorio6 {
                 catch(Exception e){
                     System.out.println("Input de usuario invalido");
                 }
-                //c.altaUsuario("martin", true, martin);
-                /*DataUsuario juans = c.verInfoUsuario("juan");
-                DataUsuario martins = c.verInfoUsuario("martin");
-                System.out.println(juans.getnick());
-                System.out.println(juans.getsexo());
-                System.out.println(martins.getnick());
-                System.out.println(martins.getsexo());*/
-                /*MgrUsuario mu = MgrUsuario.getInstance();
-                System.out.println(mu.getLista());
-                System.out.println(list[0]);
-                System.out.println(list[1]);*/
-
-                /*HashMap<String,Recursos> ListaArchivos = new HashMap<String,Recursos>();
-                Archivos a = new Archivos("presupuesto", "juan", "soy un archivo", "C:/programfiles",true);
-                ListaArchivos.put(a.getNombre(), a);
-                System.out.println(ListaArchivos.get("presupuesto").getNombre());*/
             }
             else if(inputUser.equals("ver info usuario")){
                 System.out.println("Nombre del usuario:");
@@ -78,11 +65,11 @@ public class Laboratorio6 {
             }
             else if(inputUser.equals("crear recurso")){
                 System.out.println("Ingrese datos del recurso:");
-                System.out.println("Formato: nombre-creador-descripcion-ubicacion-tipo(archivo/carpeta)");
+                System.out.println("Formato: nombre-creador-descripcion-tipo(archivo/carpeta)");
                 try{
                     inputUser = sc.nextLine();
                     String list[] = inputUser.split("-");
-                    boolean isValidPath = c.crearRecurso(list[0], list[1], list[2], list[3], list[4].equals("archivo"));
+                    boolean isValidPath = c.crearRecurso(list[0], list[1], list[2], path + "/" + list[0], list[3].equals("archivo"));
                     if(isValidPath){
                         System.out.println("Creación de recurso exitosa");
                     }
@@ -94,10 +81,47 @@ public class Laboratorio6 {
                     System.out.println("Input de recurso invalido");
                 }
             }
+            else if(inputUser.startsWith("cd ")){
+                String cmdPath = inputUser.substring(3);
+                String tempPath = ".";
+                try{
+                    if(cmdPath.startsWith(".") && !cmdPath.equals("..")){
+                        tempPath = cmdPath;
+                    }
+                    else if(cmdPath.equals("..")){
+                        tempPath = path.substring(0, path.lastIndexOf("/"));
+                    }
+                    else{
+                        tempPath = path + "/" + cmdPath;
+                    }
+                }
+                catch(Exception e){
+                    System.out.println("No puedes salir del directorio raiz");
+                }
+                ArrayList<String> carpetasPathList= c.getCarpetasPathList();
+                boolean doesPathExist = false;
+                
+                for(String carpetaPath : carpetasPathList){
+                    if(carpetaPath.equals(tempPath)){
+                        doesPathExist = true;
+                    }
+                }
+                
+                if(doesPathExist){
+                    path = tempPath;
+                }
+                else{
+                    System.out.println("Ubicacion no existente");
+                }
+            }
+            else if(inputUser.equals("dir")){
+                
+            }
             else if(inputUser.equals("cmd")){
                 System.out.println("alta usuario");
                 System.out.println("ver info usuario");
                 System.out.println("crear recurso");
+                System.out.println("cd");
             }
             else{
                 System.out.println("comando invalido");

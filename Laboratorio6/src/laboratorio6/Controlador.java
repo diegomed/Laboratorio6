@@ -6,6 +6,7 @@
 package laboratorio6;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  *
@@ -142,5 +143,25 @@ public class Controlador {
         }
         this.confirmRec();
         return isValidResource;
+    }
+    
+    //metodos de ayuda
+    public ArrayList<String> getPathList(){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        ArrayList<String> pathList = new ArrayList<String>(mr.getListaArchivos().keySet());
+        pathList.addAll(mr.getListaCarpetas().keySet());
+        return pathList;
+    }
+    
+    public ArrayList<String> getCarpetasPathList(){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        ArrayList<String> pathList = new ArrayList<String>(mr.getListaCarpetas().keySet());
+        return pathList;
+    }
+    
+    public ArrayList<String> getArchivosPathList(){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        ArrayList<String> pathList = new ArrayList<String>(mr.getListaArchivos().keySet());
+        return pathList;
     }
 }
