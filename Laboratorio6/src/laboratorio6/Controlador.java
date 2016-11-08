@@ -169,4 +169,8 @@ public class Controlador {
         MgrRecursos mr = MgrRecursos.getInstance();
         return mr.getListaRecursos().get(path).getTipo();
     }
+    
+    public Usuario getUser(String name){
+        return MgrUsuario.getInstance().getUsuario(name);
+    }
 }

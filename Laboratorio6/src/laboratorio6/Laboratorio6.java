@@ -20,10 +20,10 @@ public class Laboratorio6 {
     public static void main(String[] args) {
         
         System.out.println("cmd: para ver la lista de comandos");
-        //System.out.println((char)27 + "[35mThis text would show up red" + (char)27 + "[0m");
         String path = ".";
         Controlador c = new Controlador();
         c.crearRecurso("root", "system", "Esta es la carpeta raiz", path, false);
+        Usuario user = null;
         Scanner sc = new Scanner(System.in);
         while(true) {
             
@@ -39,7 +39,9 @@ public class Laboratorio6 {
                     DataFecha nacimientoUsuario = new DataFecha(Integer.parseInt(list[4]),Integer.parseInt(list[3]),Integer.parseInt(list[2]));
                     boolean isValidName = c.altaUsuario(list[0], list[1].equals("m"), nacimientoUsuario);
                     if(isValidName){
+                        user = c.getUser(list[0]);
                         System.out.println("alta usuario exitosa");
+                        System.out.println("actualmente logueado como " + user.getnick());
                     }
                     else{
                         System.out.println("usuario ya existente");
@@ -64,21 +66,26 @@ public class Laboratorio6 {
                 }
             }
             else if(inputUser.equals("crear recurso")){
-                System.out.println("Ingrese datos del recurso:");
-                System.out.println("Formato: nombre-creador-descripcion-tipo(archivo/carpeta)");
-                try{
-                    inputUser = sc.nextLine();
-                    String list[] = inputUser.split("-");
-                    boolean isValidPath = c.crearRecurso(list[0], list[1], list[2], path + "/" + list[0], list[3].equals("archivo"));
-                    if(isValidPath){
-                        System.out.println("Creación de recurso exitosa");
+                if(user != null){
+                    System.out.println("Ingrese datos del recurso:");
+                    System.out.println("Formato: nombre-descripcion-tipo(archivo/carpeta)");
+                    try{
+                        inputUser = sc.nextLine();
+                        String list[] = inputUser.split("-");
+                        boolean isValidPath = c.crearRecurso(list[0], user.getnick(), list[1], path + "/" + list[0], list[2].equals("archivo"));
+                        if(isValidPath){
+                            System.out.println("Creación de recurso exitosa");
+                        }
+                        else{
+                            System.out.println("El recurso ya existe en ese directorio");
+                        }
                     }
-                    else{
-                        System.out.println("El recurso ya existe en ese directorio");
+                    catch(Exception e){
+                        System.out.println("Input de recurso invalido");
                     }
                 }
-                catch(Exception e){
-                    System.out.println("Input de recurso invalido");
+                else{
+                    System.out.println("Debe estar logueado para crear un recurso");
                 }
             }
             else if(inputUser.startsWith("cd ")){
@@ -130,11 +137,43 @@ public class Laboratorio6 {
                     }
                 }
             }
+            else if(inputUser.equals("log in")){
+                if(user == null){
+                    System.out.println("Ingrese su nombre de usuario:");
+                    try{
+                        inputUser = sc.nextLine();
+                        user = c.getUser(inputUser);
+                        System.out.println("Logueado como " + user.getnick());
+                    }
+                    catch(Exception e){
+                        System.out.println("Usuario no existente");
+                    }
+                }
+                else{
+                    System.out.println("Ya esta logueado como " + user.getnick());
+                }
+            }
+            else if(inputUser.equals("log out")){
+                if(user != null){
+                    user = null;
+                    System.out.println("Se ha deslogueado");
+                }
+                else{
+                    System.out.println("Actualmente no hay ningun usuario logueado");
+                }
+            }
             else if(inputUser.equals("cmd")){
                 System.out.println("alta usuario");
                 System.out.println("ver info usuario");
                 System.out.println("crear recurso");
                 System.out.println("cd");
+                System.out.println("dir");
+                System.out.println("log in");
+                System.out.println("log out");
+                System.out.println("exit");
+            }
+            else if(inputUser.equals("exit")){
+                break;
             }
             else{
                 System.out.println("comando invalido");
