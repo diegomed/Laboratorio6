@@ -41,4 +41,11 @@ public class MgrRecursos {
     public HashMap<String,Recursos> getListaCarpetas() {
         return ListaCarpetas;
     }
+    
+    public HashMap<String,Recursos> getListaRecursos() {
+        HashMap<String,Recursos> ListaRecursos = new HashMap<String,Recursos>();
+        ListaRecursos.putAll(ListaArchivos);
+        ListaRecursos.putAll(ListaCarpetas);
+        return ListaRecursos;
+    }
 }

@@ -164,4 +164,9 @@ public class Controlador {
         ArrayList<String> pathList = new ArrayList<String>(mr.getListaArchivos().keySet());
         return pathList;
     }
+    
+    public boolean getRecursoType(String path){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        return mr.getListaRecursos().get(path).getTipo();
+    }
 }

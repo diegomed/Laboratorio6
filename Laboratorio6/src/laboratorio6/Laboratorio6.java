@@ -34,7 +34,7 @@ public class Laboratorio6 {
                 System.out.println("Ingrese datos del usuario:");
                 System.out.println("Formato: nombre-sexo(m/f)-dia-mes(nro)-año");
                 try{
-                    inputUser = sc.nextLine(); //investigar try catch
+                    inputUser = sc.nextLine();
                     String list[] = inputUser.split("-");
                     DataFecha nacimientoUsuario = new DataFecha(Integer.parseInt(list[4]),Integer.parseInt(list[3]),Integer.parseInt(list[2]));
                     boolean isValidName = c.altaUsuario(list[0], list[1].equals("m"), nacimientoUsuario);
@@ -98,7 +98,7 @@ public class Laboratorio6 {
                 catch(Exception e){
                     System.out.println("No puedes salir del directorio raiz");
                 }
-                ArrayList<String> carpetasPathList= c.getCarpetasPathList();
+                ArrayList<String> carpetasPathList = c.getCarpetasPathList();
                 boolean doesPathExist = false;
                 
                 for(String carpetaPath : carpetasPathList){
@@ -115,7 +115,20 @@ public class Laboratorio6 {
                 }
             }
             else if(inputUser.equals("dir")){
-                
+                ArrayList<String> PathList = c.getPathList();
+                for(String recursoPath : PathList){
+                    if(recursoPath.startsWith(path) && !recursoPath.equals(path)){
+                        String tempPath = recursoPath.substring(path.length() + 1);
+                        if(tempPath.indexOf("/") == -1){
+                            if(c.getRecursoType(recursoPath)){
+                                System.out.println((char)27 + "[34m" + recursoPath.substring(path.length() + 1) + (char)27 + "[0m");
+                            }
+                            else{
+                                System.out.println((char)27 + "[35m" + recursoPath.substring(path.length() + 1) + (char)27 + "[0m");
+                            }
+                        }
+                    }
+                }
             }
             else if(inputUser.equals("cmd")){
                 System.out.println("alta usuario");
