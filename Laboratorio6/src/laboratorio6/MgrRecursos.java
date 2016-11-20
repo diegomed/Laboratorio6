@@ -34,6 +34,11 @@ public class MgrRecursos {
         }
     }
     
+    public void agregarColaborador(Colaborador colab, String ubicacionColab){
+        Carpetas carpetaColaborada = (Carpetas)ListaCarpetas.get(ubicacionColab);
+        carpetaColaborada.agregarColaborador(colab);
+    }
+    
     public HashMap<String,Recursos> getListaArchivos() {
         return ListaArchivos;
     }

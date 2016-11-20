@@ -12,17 +12,21 @@ import java.util.ArrayList;
  */
 public class Carpetas extends Recursos {
     HashMap<String,Recursos> recursosIn = new HashMap<String,Recursos>();
-    ArrayList<String> listaColaboradores = new ArrayList<String>();
+    HashMap<String,Colaborador> listaColaboradores = new HashMap<String,Colaborador>();
     
     public Carpetas(String name, String creator, String description, String ubication, boolean type) {
         super(name, creator, description, ubication, type);
+    }
+    
+    public void agregarColaborador(Colaborador colab){
+        listaColaboradores.put(colab.getUsuarioColaborador().getnick(), colab);
     }
     
     public HashMap<String,Recursos> getListaRecursos() {
         return recursosIn;
     }
     
-    public ArrayList<String> getListaColaboradores() {
+    public HashMap<String,Colaborador> getListaColaboradores() {
         return listaColaboradores;
     }
 }

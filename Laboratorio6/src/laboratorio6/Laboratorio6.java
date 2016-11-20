@@ -88,6 +88,13 @@ public class Laboratorio6 {
                     System.out.println("Debe estar logueado para crear un recurso");
                 }
             }
+            else if(inputUser.equals("agregar colaborador")){
+                System.out.println("Ingrese datos del colaborador:");
+                System.out.println("Formato: nombre de usuario-ubicacion del recurso");
+                inputUser = sc.nextLine();
+                String list[] = inputUser.split("-");
+                c.agregarColaborador(list[0], list[1]);
+            }
             else if(inputUser.startsWith("cd ")){
                 String cmdPath = inputUser.substring(3);
                 String tempPath = ".";

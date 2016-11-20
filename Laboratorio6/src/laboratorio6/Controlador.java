@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Diego
  */
 public class Controlador {
-    private String nickname, nombre, creador, descripcion, ubicacion;
+    private String nickname, nombre, creador, descripcion, ubicacion, colaborador, ubicacionColab;
     private DataFecha nacimiento;
     private boolean sexo, tipo;
     
@@ -44,6 +44,12 @@ public class Controlador {
     }
     public boolean getTipo() {
         return tipo;
+    }
+    public String getColaborador(){
+        return colaborador;
+    }
+    public String getUbicacionColab(){
+        return ubicacionColab;
     }
     
     //alta usuario
@@ -111,13 +117,41 @@ public class Controlador {
     public void confirmRec() {
         MgrRecursos mr = MgrRecursos.getInstance();
         if(this.getTipo()) {
-            Recursos rec = new Archivos(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+            Archivos rec = new Archivos(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
             mr.agregarRecurso(rec);
         }
         else{
-            Recursos rec = new Carpetas(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+            Carpetas rec = new Carpetas(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
             mr.agregarRecurso(rec);
         }
+    }
+    
+    //Agregar colaborador
+    public boolean addColab(String nickname, String ubicacion){
+        boolean colabYaExiste = false;
+        MgrRecursos mr = MgrRecursos.getInstance();
+        Carpetas carpetaColaborada = (Carpetas) mr.getListaCarpetas().get(ubicacion);
+        HashMap<String,Colaborador> listaColaboradores = carpetaColaborada.getListaColaboradores();
+        
+        for (String colaborador : listaColaboradores.keySet()) {
+            if ((listaColaboradores.get(colaborador)).getUsuarioColaborador().getnick().equals(nickname)) {
+                colabYaExiste = true;
+            }
+        }
+
+        if(!colabYaExiste){
+            colaborador = nickname;
+            ubicacionColab = ubicacion;
+            return true;
+        }
+        return false;
+    }
+    
+    public void confirmColab(){
+        MgrUsuario mu = MgrUsuario.getInstance();
+        Colaborador colab = new Colaborador(mu.getUsuario(colaborador));
+        MgrRecursos mr = MgrRecursos.getInstance();
+        mr.agregarColaborador(colab, ubicacionColab);
     }
     
     //Comandos
@@ -143,6 +177,15 @@ public class Controlador {
         }
         this.confirmRec();
         return isValidResource;
+    }
+    
+    public boolean agregarColaborador(String nickname, String ubicacion){
+        boolean isValidColab = this.addColab(nickname, ubicacion);
+        if(!isValidColab){
+            return isValidColab;
+        }
+        this.confirmColab();
+        return isValidColab;
     }
     
     //metodos de ayuda
