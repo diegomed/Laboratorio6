@@ -22,6 +22,10 @@ public class Carpetas extends Recursos {
         listaColaboradores.put(colab.getUsuarioColaborador().getnick(), colab);
     }
     
+    public void agregarRecursoIn(Recursos rec){
+        recursosIn.put(rec.getUbicacion(), rec);
+    }
+    
     public HashMap<String,Recursos> getListaRecursos() {
         return recursosIn;
     }

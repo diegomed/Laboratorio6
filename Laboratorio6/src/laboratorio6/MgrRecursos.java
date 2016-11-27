@@ -39,6 +39,16 @@ public class MgrRecursos {
         carpetaColaborada.agregarColaborador(colab);
     }
     
+    public void agregarACarpetaContenedora(Recursos rec){
+        Carpetas carp = (Carpetas) this.getListaCarpetas().get(rec.getUbicacion().substring(0, rec.getUbicacion().lastIndexOf("/")));
+        carp.agregarRecursoIn(rec);
+    }
+    
+    public HashMap<String,Recursos> getRecursosIn(String path){
+        Carpetas carp = (Carpetas) this.getListaCarpetas().get(path);
+        return carp.getListaRecursos();
+    }
+    
     public HashMap<String,Recursos> getListaArchivos() {
         return ListaArchivos;
     }

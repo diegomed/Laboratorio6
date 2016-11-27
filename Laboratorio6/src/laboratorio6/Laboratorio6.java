@@ -42,6 +42,7 @@ public class Laboratorio6 {
                         user = c.getUser(list[0]);
                         System.out.println("alta usuario exitosa");
                         System.out.println("actualmente logueado como " + user.getnick());
+                        c.agregarColaborador(user.getnick(), ".");
                     }
                     else{
                         System.out.println("usuario ya existente");
@@ -72,12 +73,20 @@ public class Laboratorio6 {
                     try{
                         inputUser = sc.nextLine();
                         String list[] = inputUser.split("-");
-                        boolean isValidPath = c.crearRecurso(list[0], user.getnick(), list[1], path + "/" + list[0], list[2].equals("archivo"));
-                        if(isValidPath){
-                            System.out.println("Creación de recurso exitosa");
+                        if(c.isColab(user.getnick(), path)){
+                            boolean isValidPath = c.crearRecurso(list[0], user.getnick(), list[1], path + "/" + list[0], list[2].equals("archivo"));
+                            if(isValidPath){
+                                System.out.println("Creación de recurso exitosa");
+                                if(!c.getRecursoType(path + "/" + list[0])){
+                                    c.agregarColaborador(user.getnick(), path + "/" + list[0]);
+                                }
+                            }
+                            else{
+                                System.out.println("El recurso ya existe en ese directorio");
+                            }
                         }
                         else{
-                            System.out.println("El recurso ya existe en ese directorio");
+                            System.out.println("Usted no es colaborador del directorio, no puede agregar recursos a el");
                         }
                     }
                     catch(Exception e){
@@ -89,11 +98,35 @@ public class Laboratorio6 {
                 }
             }
             else if(inputUser.equals("agregar colaborador")){
-                System.out.println("Ingrese datos del colaborador:");
-                System.out.println("Formato: nombre de usuario-ubicacion del recurso");
-                inputUser = sc.nextLine();
-                String list[] = inputUser.split("-");
-                c.agregarColaborador(list[0], list[1]);
+                if(user != null){
+                    System.out.println("Ingrese datos del colaborador:");
+                    System.out.println("Formato: nombre de usuario-ubicacion del recurso");
+                    try{
+                        inputUser = sc.nextLine();
+                        String list[] = inputUser.split("-");
+                        if(c.isColab(user.getnick(), list[1])){
+                            boolean isValidColab = c.agregarColaborador(list[0], list[1]);
+                            if(isValidColab){
+                                System.out.println("colaborador agregado");
+                            }
+                            else{
+                                System.out.println("colaborador ya existe para ese directorio");
+                            }
+                        }
+                        else{
+                            System.out.println("Usted no es colaborador de ese directorio, no puede agregar colaboradores a el");
+                        }
+                    }
+                    catch(ArrayIndexOutOfBoundsException e){
+                        System.out.println("Comando invalido");
+                    }
+                    catch(NullPointerException e){
+                        System.out.println("Carpeta y/o usuario no existente");
+                    }
+                }
+                else{
+                    System.out.println("Debe estar logueado para agregar colaborador");
+                }
             }
             else if(inputUser.startsWith("cd ")){
                 String cmdPath = inputUser.substring(3);
@@ -129,7 +162,16 @@ public class Laboratorio6 {
                 }
             }
             else if(inputUser.equals("dir")){
-                ArrayList<String> PathList = c.getPathList();
+                HashMap<String,Recursos> ListaRecursosIn = c.getRecursosIn(path);
+                for(Recursos recursoIn : ListaRecursosIn.values()){
+                    if(c.getRecursoType(recursoIn.getUbicacion())){
+                        System.out.println((char)27 + "[34m" + recursoIn.getNombre() + (char)27 + "[0m");
+                    }
+                    else{
+                        System.out.println((char)27 + "[35m" + recursoIn.getNombre() + (char)27 + "[0m");
+                    }
+                }
+                /*ArrayList<String> PathList = c.getPathList();
                 for(String recursoPath : PathList){
                     if(recursoPath.startsWith(path) && !recursoPath.equals(path)){
                         String tempPath = recursoPath.substring(path.length() + 1);
@@ -142,7 +184,7 @@ public class Laboratorio6 {
                             }
                         }
                     }
-                }
+                }*/
             }
             else if(inputUser.equals("log in")){
                 if(user == null){
@@ -173,6 +215,7 @@ public class Laboratorio6 {
                 System.out.println("alta usuario");
                 System.out.println("ver info usuario");
                 System.out.println("crear recurso");
+                System.out.println("agregar colaborador");
                 System.out.println("cd");
                 System.out.println("dir");
                 System.out.println("log in");

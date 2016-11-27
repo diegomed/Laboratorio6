@@ -118,10 +118,16 @@ public class Controlador {
         MgrRecursos mr = MgrRecursos.getInstance();
         if(this.getTipo()) {
             Archivos rec = new Archivos(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+            if(!rec.getUbicacion().equals(".")){
+                mr.agregarACarpetaContenedora(rec);
+            }
             mr.agregarRecurso(rec);
         }
         else{
             Carpetas rec = new Carpetas(this.getNombre(), this.getCreador(), this.getDescripcion(), this.getUbicacion(), this.getTipo());
+            if(!rec.getUbicacion().equals(".")){
+                mr.agregarACarpetaContenedora(rec);
+            }
             mr.agregarRecurso(rec);
         }
     }
@@ -215,5 +221,16 @@ public class Controlador {
     
     public Usuario getUser(String name){
         return MgrUsuario.getInstance().getUsuario(name);
+    }
+    
+    public boolean isColab(String user, String path){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        Carpetas carp = (Carpetas) mr.getListaCarpetas().get(path);
+        return carp.getListaColaboradores().containsKey(user);
+    }
+    
+    public HashMap<String,Recursos> getRecursosIn(String path){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        return mr.getRecursosIn(path);
     }
 }
