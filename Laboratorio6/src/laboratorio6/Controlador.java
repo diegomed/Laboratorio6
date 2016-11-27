@@ -13,8 +13,9 @@ import java.util.ArrayList;
  * @author Diego
  */
 public class Controlador {
-    private String nickname, nombre, creador, descripcion, ubicacion, colaborador, ubicacionColab;
+    private String nickname, nombre, creador, descripcion, ubicacion, colaborador, ubicacionColab, coment, ubicacionComentario;
     private DataFecha nacimiento;
+    private Usuario userComentario;
     private boolean sexo, tipo;
     
     
@@ -50,6 +51,15 @@ public class Controlador {
     }
     public String getUbicacionColab(){
         return ubicacionColab;
+    }
+    public String getComent(){
+        return coment;
+    }
+    public String getUbicacionComentario(){
+        return ubicacionComentario;
+    }
+    public Usuario getUserComentario(){
+        return userComentario;
     }
     
     //alta usuario
@@ -160,6 +170,20 @@ public class Controlador {
         mr.agregarColaborador(colab, ubicacionColab);
     }
     
+    //ingresar comentario
+    public void newComentario(String comentario, String path, Usuario user){
+        coment = comentario;
+        ubicacionComentario = path;
+        userComentario = user;
+    }
+    
+    public void confirmComentario(){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        Comentario nuevoComentario = new Comentario(coment, userComentario);
+        Archivos archivoComentado = (Archivos) mr.getListaArchivos().get(ubicacionComentario);
+        archivoComentado.agregarComentario(nuevoComentario);
+    }
+    
     //Comandos
     public boolean altaUsuario(String nick, boolean sex, DataFecha nac) {
         boolean isValidName = this.newUserNick(nick);
@@ -192,6 +216,11 @@ public class Controlador {
         }
         this.confirmColab();
         return isValidColab;
+    }
+    
+    public void ingresarComentario(String comentario, String path, Usuario user){
+        this.newComentario(comentario, path, user);
+        this.confirmComentario();
     }
     
     //metodos de ayuda

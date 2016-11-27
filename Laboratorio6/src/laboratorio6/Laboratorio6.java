@@ -100,12 +100,19 @@ public class Laboratorio6 {
             else if(inputUser.equals("agregar colaborador")){
                 if(user != null){
                     System.out.println("Ingrese datos del colaborador:");
-                    System.out.println("Formato: nombre de usuario-ubicacion del recurso");
+                    System.out.println("Formato: nombre de usuario-ubicacion del recurso (o nombre si ud se encuentra en el directorio del mismo)");
                     try{
                         inputUser = sc.nextLine();
                         String list[] = inputUser.split("-");
-                        if(c.isColab(user.getnick(), list[1])){
-                            boolean isValidColab = c.agregarColaborador(list[0], list[1]);
+                        String ubicacionDelRecurso;
+                        if(list[1].startsWith("./")){
+                            ubicacionDelRecurso = list[1];
+                        }
+                        else{
+                            ubicacionDelRecurso = path + "/" +list[1];
+                        }
+                        if(c.isColab(user.getnick(), ubicacionDelRecurso)){
+                            boolean isValidColab = c.agregarColaborador(list[0], ubicacionDelRecurso);
                             if(isValidColab){
                                 System.out.println("colaborador agregado");
                             }
@@ -118,7 +125,7 @@ public class Laboratorio6 {
                         }
                     }
                     catch(ArrayIndexOutOfBoundsException e){
-                        System.out.println("Comando invalido");
+                        System.out.println("input de colaborador invalido");
                     }
                     catch(NullPointerException e){
                         System.out.println("Carpeta y/o usuario no existente");
@@ -126,6 +133,34 @@ public class Laboratorio6 {
                 }
                 else{
                     System.out.println("Debe estar logueado para agregar colaborador");
+                }
+            }
+            else if(inputUser.equals("ingresar comentario")){
+                if(user != null){
+                    System.out.println("Ingrese datos del comentario:");
+                    System.out.println("Formato: comentario-ubicacion del archivo (o nombre si ud se encuentra en el directorio del mismo)");
+                    try{
+                        inputUser = sc.nextLine();
+                        String list[] = inputUser.split("-");
+                        String ubicacionDelRecurso;
+                        if(list[1].startsWith("./")){
+                            ubicacionDelRecurso = list[1];
+                        }
+                        else{
+                            ubicacionDelRecurso = path + "/" +list[1];
+                        }
+                        c.ingresarComentario(list[0], ubicacionDelRecurso, user);
+                        System.out.println("comentario ingresado exitosamente");
+                    }
+                    catch(ArrayIndexOutOfBoundsException e){
+                        System.out.println("input de comentario invalido");
+                    }
+                    catch(NullPointerException e){
+                        System.out.println("Archivo no existente");
+                    }
+                }
+                else{
+                    System.out.println("Debe estar logueado para ingresar comentario");
                 }
             }
             else if(inputUser.startsWith("cd ")){
@@ -171,20 +206,6 @@ public class Laboratorio6 {
                         System.out.println((char)27 + "[35m" + recursoIn.getNombre() + (char)27 + "[0m");
                     }
                 }
-                /*ArrayList<String> PathList = c.getPathList();
-                for(String recursoPath : PathList){
-                    if(recursoPath.startsWith(path) && !recursoPath.equals(path)){
-                        String tempPath = recursoPath.substring(path.length() + 1);
-                        if(tempPath.indexOf("/") == -1){
-                            if(c.getRecursoType(recursoPath)){
-                                System.out.println((char)27 + "[34m" + recursoPath.substring(path.length() + 1) + (char)27 + "[0m");
-                            }
-                            else{
-                                System.out.println((char)27 + "[35m" + recursoPath.substring(path.length() + 1) + (char)27 + "[0m");
-                            }
-                        }
-                    }
-                }*/
             }
             else if(inputUser.equals("log in")){
                 if(user == null){
@@ -216,6 +237,7 @@ public class Laboratorio6 {
                 System.out.println("ver info usuario");
                 System.out.println("crear recurso");
                 System.out.println("agregar colaborador");
+                System.out.println("ingresar comentario");
                 System.out.println("cd");
                 System.out.println("dir");
                 System.out.println("log in");
