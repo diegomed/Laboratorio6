@@ -184,6 +184,20 @@ public class Controlador {
         archivoComentado.agregarComentario(nuevoComentario);
     }
     
+    //ver info archivo
+    public Archivos infoFile(String path){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        Archivos file = (Archivos) mr.getListaArchivos().get(path);
+        return file;
+    }
+    
+    //ver info carpetas
+    public Carpetas infoFolder(String path){
+        MgrRecursos mr = MgrRecursos.getInstance();
+        Carpetas folder = (Carpetas) mr.getListaCarpetas().get(path);
+        return folder;
+    }
+    
     //Comandos
     public boolean altaUsuario(String nick, boolean sex, DataFecha nac) {
         boolean isValidName = this.newUserNick(nick);
@@ -221,6 +235,14 @@ public class Controlador {
     public void ingresarComentario(String comentario, String path, Usuario user){
         this.newComentario(comentario, path, user);
         this.confirmComentario();
+    }
+    
+    public Archivos verInfoArchivo(String path){
+        return this.infoFile(path);
+    }
+    
+    public Carpetas verInfoCarpeta(String path){
+        return this.infoFolder(path);
     }
     
     //metodos de ayuda

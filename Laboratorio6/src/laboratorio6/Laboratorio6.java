@@ -163,6 +163,114 @@ public class Laboratorio6 {
                     System.out.println("Debe estar logueado para ingresar comentario");
                 }
             }
+            else if(inputUser.equals("ver info archivo")){
+                System.out.println("Ingrese ingrese la ubicacion del archivo (o el nombre si ya se encuentra en el directorio del mismo):");
+                try{
+                    inputUser = sc.nextLine();
+                    String list[] = inputUser.split("-");
+                    String ubicacionDelRecurso;
+                    if(list[0].startsWith("./")){
+                        ubicacionDelRecurso = list[0];
+                    }
+                    else{
+                        ubicacionDelRecurso = path + "/" +list[0];
+                    }
+                    Archivos file = c.verInfoArchivo(ubicacionDelRecurso);
+                    System.out.println("Nombre: " + file.getNombre());
+                    System.out.println("Creador: " + file.getCreador());
+                    System.out.println("Descripcion: " + file.getDescripcion());
+                    System.out.println("Ubicacion: " + file.getUbicacion());
+                    System.out.print("Tipo: ");
+                    System.out.println((file.getTipo()) ? "Archivo" : "Carpeta");
+                    System.out.println("Fecha creacion: " + file.getcreacion().getD() + "/"
+                                                            + file.getcreacion().getMes() + "/"
+                                                            + file.getcreacion().getA() + " - "
+                                                            + file.getcreacion().getH() + ":"
+                                                            + file.getcreacion().getMin());
+                    System.out.println("Fecha ultimo acceso: " + file.getultimoAcceso().getD() + "/"
+                                                            + file.getultimoAcceso().getMes() + "/"
+                                                            + file.getultimoAcceso().getA() + " - "
+                                                            + file.getultimoAcceso().getH() + ":"
+                                                            + file.getultimoAcceso().getMin());
+                    System.out.println("Fecha modificacion: " + file.getmodificacion().getD() + "/"
+                                                            + file.getmodificacion().getMes() + "/"
+                                                            + file.getmodificacion().getA() + " - "
+                                                            + file.getmodificacion().getH() + ":"
+                                                            + file.getmodificacion().getMin());
+                    System.out.println("Comentarios: ");
+                    for(Comentario com : file.getListaComentarios()){
+                        System.out.print("\t");
+                        System.out.print((char)27 + "[32m" + com.getUser().getnick() + ": " + com.getComentario() + (char)27 + "[0m");
+                        System.out.println((char)27 + "[32m" + " - (" + com.getFechaComentario().getD() + "/"
+                                                            + com.getFechaComentario().getMes() + "/"
+                                                            + com.getFechaComentario().getA() + " - "
+                                                            + com.getFechaComentario().getH() + ":"
+                                                            + com.getFechaComentario().getMin() + ")" + (char)27 + "[0m");
+                    }
+                }
+                catch(Exception e){
+                    System.out.println("Archivo no existente");
+                }
+            }
+            else if(inputUser.equals("ver info carpeta")){
+                System.out.println("Ingrese ingrese la ubicacion de la carpeta (o el nombre si ya se encuentra en el directorio de la mismo):");
+                try{
+                    inputUser = sc.nextLine();
+                    String list[] = inputUser.split("-");
+                    String ubicacionDelRecurso;
+                    if(list[0].startsWith("./") || list[0].equals(".")){
+                        ubicacionDelRecurso = list[0];
+                    }
+                    else{
+                        ubicacionDelRecurso = path + "/" +list[0];
+                    }
+                    Carpetas folder = c.verInfoCarpeta(ubicacionDelRecurso);
+                    System.out.println("Nombre: " + folder.getNombre());
+                    System.out.println("Creador: " + folder.getCreador());
+                    System.out.println("Descripcion: " + folder.getDescripcion());
+                    System.out.println("Ubicacion: " + folder.getUbicacion());
+                    System.out.print("Tipo: ");
+                    System.out.println((folder.getTipo()) ? "Archivo" : "Carpeta");
+                    System.out.println("Fecha creacion: " + folder.getcreacion().getD() + "/"
+                                                            + folder.getcreacion().getMes() + "/"
+                                                            + folder.getcreacion().getA() + " - "
+                                                            + folder.getcreacion().getH() + ":"
+                                                            + folder.getcreacion().getMin());
+                    System.out.println("Fecha ultimo acceso: " + folder.getultimoAcceso().getD() + "/"
+                                                            + folder.getultimoAcceso().getMes() + "/"
+                                                            + folder.getultimoAcceso().getA() + " - "
+                                                            + folder.getultimoAcceso().getH() + ":"
+                                                            + folder.getultimoAcceso().getMin());
+                    System.out.println("Fecha modificacion: " + folder.getmodificacion().getD() + "/"
+                                                            + folder.getmodificacion().getMes() + "/"
+                                                            + folder.getmodificacion().getA() + " - "
+                                                            + folder.getmodificacion().getH() + ":"
+                                                            + folder.getmodificacion().getMin());
+                    System.out.println("Colaboradores: ");
+                    for(Colaborador colab : folder.getListaColaboradores().values()){
+                        System.out.print("\t");
+                        System.out.print((char)27 + "[31m" + colab.getUsuarioColaborador().getnick() + (char)27 + "[0m");
+                        System.out.println((char)27 + "[31m" + " - (" + colab.getFechaAgregado().getD() + "/"
+                                                            + colab.getFechaAgregado().getMes() + "/"
+                                                            + colab.getFechaAgregado().getA() + " - "
+                                                            + colab.getFechaAgregado().getH() + ":"
+                                                            + colab.getFechaAgregado().getMin() + ")" + (char)27 + "[0m");
+                    }
+                    System.out.println("Contiene los recursos: ");
+                    for(Recursos fol : folder.getListaRecursos().values()){
+                        System.out.print("\t");
+                        if(fol.getTipo()){
+                            System.out.println((char)27 + "[34m" + fol.getNombre() + (char)27 + "[0m");
+                        }
+                        else{
+                            System.out.println((char)27 + "[35m" + fol.getNombre() + (char)27 + "[0m");
+                        }
+                    }
+                }
+                catch(Exception e){
+                    System.out.println("Carpeta no existente");
+                }
+            }
             else if(inputUser.startsWith("cd ")){
                 String cmdPath = inputUser.substring(3);
                 String tempPath = ".";
@@ -238,6 +346,8 @@ public class Laboratorio6 {
                 System.out.println("crear recurso");
                 System.out.println("agregar colaborador");
                 System.out.println("ingresar comentario");
+                System.out.println("ver info archivo");
+                System.out.println("ver info carpeta");
                 System.out.println("cd");
                 System.out.println("dir");
                 System.out.println("log in");
